@@ -38,8 +38,9 @@ public class ProjectState : IInitializableProject
 
 	public void StatesMath()
 	{
-		goal = 10;
-		shiners = 10;
+		var xDegree = ProjectManagment.Manager.CurrentDegree;
+		goal = (int)(3f * Mathf.Log((xDegree + 1f) * (xDegree + 1f)) - 1);
+		shiners = (int)(5f * Mathf.Log((xDegree + 1f) * (xDegree + 1f)) - 1);
 	}
 
 	public void RestateProject()

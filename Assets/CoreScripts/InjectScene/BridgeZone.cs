@@ -7,6 +7,7 @@ public class BridgeZone : MonoBehaviour
 	[SerializeField] private ParticleSystem bridgeParticles;
 	[SerializeField] private Collider2D edge;
 	[SerializeField] private float blinkTime;
+	[SerializeField] private float sleepTime;
 
 	private void Start()
 	{
@@ -19,7 +20,7 @@ public class BridgeZone : MonoBehaviour
 		bridgeParticles.Stop(false, ParticleSystemStopBehavior.StopEmitting);
 		bridge.SetActive(false);
 		edge.enabled = false;
-		yield return new WaitForSeconds(blinkTime);
+		yield return new WaitForSeconds(sleepTime);
 		bridgeParticles.Play();
 		bridge.SetActive(true);
 		edge.enabled = true;

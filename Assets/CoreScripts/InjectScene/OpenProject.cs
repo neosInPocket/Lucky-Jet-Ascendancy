@@ -1,18 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class OpenProject : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public Action ProjectOpened;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public void ToggleOpenProject(bool toggleValue, Action projectOpened = null)
+	{
+		if (toggleValue)
+		{
+			ProjectOpened = projectOpened;
+			gameObject.SetActive(true);
+		}
+		else
+		{
+			if (ProjectOpened != null)
+			{
+				ProjectOpened();
+				gameObject.SetActive(false);
+			}
+			else
+			{
+				throw new NullReferenceException("Null reference on project opened action");
+			}
+		}
+	}
 }

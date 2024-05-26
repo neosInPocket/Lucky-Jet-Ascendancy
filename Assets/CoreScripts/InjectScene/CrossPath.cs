@@ -11,6 +11,7 @@ public class CrossPath : MonoBehaviour
 	[SerializeField] public float lineRendererTweenSpeed;
 	[SerializeField] public BridgeZone bridgeZone;
 	[SerializeField] public LineRenderer lineRendererPrefab;
+	[SerializeField] public InstantTimer timer;
 	private LineRenderer currentLine;
 
 	public PathPoint nextPathPoint { get; private set; }
@@ -26,10 +27,12 @@ public class CrossPath : MonoBehaviour
 	public void GenerateNextPathPoint()
 	{
 		nextPathPoint.EnableCompletedEffects();
-		StartCoroutine(GetLineRendererTween());
+		bool withBridge = Random.Range(0, 1f) > 0.5f;
+		timer.SetTimerCountDown(withBridge);
+		StartCoroutine(GetLineRendererTween(withBridge));
 	}
 
-	public IEnumerator GetLineRendererTween()
+	public IEnumerator GetLineRendererTween(bool withBridge)
 	{
 		Vector3 destination;
 		destination.x = Random.Range(-ScreenBounds.x + crossBall.CrossBallRendererRadius, ScreenBounds.x - crossBall.CrossBallRendererRadius);
@@ -48,15 +51,14 @@ public class CrossPath : MonoBehaviour
 		}
 
 		currentLine.SetPosition(currentLine.positionCount - 1, destination);
-		InstantiateNextPoint(destination);
-		crossBall.IsCurrentlyTweening = false;
+		InstantiateNextPoint(destination, withBridge);
 	}
 
-	public void InstantiateNextPoint(Vector2 position)
+	public void InstantiateNextPoint(Vector2 position, bool withBridge)
 	{
 		var nextPoint = Instantiate(pointPrefab, position, Quaternion.identity, transform);
 
-		if (Random.Range(0, 1f) > 0.5f)
+		if (withBridge)
 		{
 			Vector2 bridgePosition;
 			bridgePosition.x = (nextPoint.transform.position.x + nextPathPoint.transform.position.x) / 2;
@@ -64,19 +66,9 @@ public class CrossPath : MonoBehaviour
 
 			var bridge = Instantiate(bridgeZone, bridgePosition, Quaternion.identity, transform);
 			bridge.transform.up = nextPoint.transform.position - nextPathPoint.transform.position;
-
-			SpawnLineRenderer(currentLine.GetPosition(currentLine.positionCount - 2));
 		}
 
-		nextPathPoint = nextPoint;
-	}
 
-	public void SpawnLineRenderer(Vector2 currentPosition)
-	{
-		var line = Instantiate(lineRendererPrefab, Vector2.zero, Quaternion.identity, transform);
-		line.SetPosition(0, currentPosition);
-		var nextLinePosition = new Vector2(currentPosition.x, currentPosition.y + 5);
-		line.SetPosition(1, nextLinePosition);
-		currentLine = line;
+		nextPathPoint = nextPoint;
 	}
 }

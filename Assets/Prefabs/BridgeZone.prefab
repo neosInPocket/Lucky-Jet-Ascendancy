@@ -136,7 +136,8 @@ MonoBehaviour:
   bridge: {fileID: 935360732317043640}
   bridgeParticles: {fileID: 4648046494147455388}
   edge: {fileID: 1457390493223214558}
-  blinkTime: 3
+  blinkTime: 1
+  sleepTime: 1
 --- !u!68 &1457390493223214558
 EdgeCollider2D:
   m_ObjectHideFlags: 0

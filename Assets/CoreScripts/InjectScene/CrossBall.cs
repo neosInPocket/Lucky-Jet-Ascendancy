@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -12,9 +13,11 @@ public class CrossBall : MonoBehaviour
 	[SerializeField] public Ease tweenEaseFunction;
 	public float CrossBallRendererRadius => crossBallRenderer.bounds.size.x / 2;
 	[HideInInspector] public float tweenSpeed;
-	[HideInInspector] public bool IsCurrentlyTweening;
 	[SerializeField] public GameObject crossBallDestroy;
 	public Action CrossBallDestroyed;
+	public Action PathPointHit;
+	private Ease currentEase;
+	private bool isInTrigger;
 	private void Awake()
 	{
 		EnhancedTouchSupport.Enable();
@@ -24,6 +27,7 @@ public class CrossBall : MonoBehaviour
 	private void Start()
 	{
 		tweenSpeed = tweenSpeeds[ProjectManagment.Manager.StartAdvance];
+		currentEase = ProjectManagment.Manager.EndAdvance == 1 ? Ease.Linear : tweenEaseFunction;
 	}
 
 	public void EnableCrossBall()
@@ -34,21 +38,57 @@ public class CrossBall : MonoBehaviour
 	public void DisableCrossBall()
 	{
 		Touch.onFingerDown -= GoToPathPoint;
+		Touch.onFingerDown -= StopCrossBall;
 	}
 
 	public void GoToPathPoint(Finger finger)
 	{
-		if (IsCurrentlyTweening) return;
+		Touch.onFingerDown -= GoToPathPoint;
+		Touch.onFingerDown += StopCrossBall;
 
-		IsCurrentlyTweening = true;
-		float tweenTime = Vector2.Distance(path.nextPathPoint.transform.position, transform.position) / tweenSpeed;
-		transform.DOMove(path.nextPathPoint.transform.position, tweenTime).SetEase(tweenEaseFunction).OnComplete(OnTweenCompleted);
+		Ray ray = Camera.main.ScreenPointToRay(finger.screenPosition);
+		RaycastHit hit;
+
+		Physics.Raycast(ray, out hit);
+		Vector2 tapPosition = ray.origin;
+
+		if (tapPosition.y < transform.position.y)
+		{
+			Touch.onFingerDown += GoToPathPoint;
+			Touch.onFingerDown -= StopCrossBall;
+			return;
+		}
+
+		float tweenTime = Vector2.Distance(tapPosition, transform.position) / tweenSpeed;
+		transform.DOMove(tapPosition, tweenTime).SetEase(currentEase).OnComplete(TweenCompleted);
+	}
+
+	public void TweenCompleted()
+	{
+		StopCrossBall(null);
+	}
+
+	public void StopCrossBall(Finger finger)
+	{
+		Touch.onFingerDown -= StopCrossBall;
+		Touch.onFingerDown += GoToPathPoint;
+
+		transform.DOKill();
+
+		if (isInTrigger)
+		{
+			PathPointHit?.Invoke();
+			OnTweenCompleted();
+		}
+		else
+		{
+			DestroyCross();
+		}
 	}
 
 	public void OnTweenCompleted()
 	{
 		path.GenerateNextPathPoint();
-		transform.DOKill();
 	}
 
 	public void OnTriggerEnter2D(Collider2D collider)
@@ -56,6 +96,26 @@ public class CrossBall : MonoBehaviour
 		if (collider.TryGetComponent<BurnFloor>(out var burnFloor))
 		{
 			DestroyCross();
+			return;
+		}
+
+		if (collider.TryGetComponent<BridgeZone>(out var zone))
+		{
+			DestroyCross();
+			return;
+		}
+
+		if (collider.TryGetComponent<PathPoint>(out var PathPoint))
+		{
+			isInTrigger = true;
+		}
+	}
+
+	public void OnTriggerExit2D(Collider2D collider)
+	{
+		if (collider.TryGetComponent<PathPoint>(out var PathPoint))
+		{
+			isInTrigger = false;
 		}
 	}
 
@@ -68,28 +128,9 @@ public class CrossBall : MonoBehaviour
 		CrossBallDestroyed?.Invoke();
 	}
 
-	// public void OnTriggerEnter2D(Collider2D pathPoint)
-	// {
-	// 	if (pathPoint.TryGetComponent<PathPoint>(out PathPoint point))
-	// 	{
-
-	// 	}
-	// }
-
-
-
-	// public IEnumerator CheckCenterMatch(Transform toCenter, Vector2 initialVector)
-	// {
-	// 	while (Vector2.Dot(toCenter.transform.position - transform.position, initialVector) > 0)
-	// 	{
-	// 		yield return null;
-	// 	}
-
-	// 	IsCurrentlyTweening = false;
-	// }
-
 	public void OnDestroy()
 	{
 		Touch.onFingerDown -= GoToPathPoint;
+		Touch.onFingerDown -= StopCrossBall;
 	}
 }
