@@ -94,12 +94,16 @@ public class ProjectManagment : MonoBehaviour
 		{
 			LoadExistingSaves();
 		}
+		else
+		{
+			ManageSavings();
+		}
 	}
 
 	public void LoadExistingSaves()
 	{
-		currentDegree = PlayerPrefs.GetInt(shinersPath, currentDegree);
-		shiners = PlayerPrefs.GetInt(currentDegreePath, shiners);
+		currentDegree = PlayerPrefs.GetInt(currentDegreePath, currentDegree);
+		shiners = PlayerPrefs.GetInt(shinersPath, shiners);
 		startAdvance = PlayerPrefs.GetInt(startAdvancePath, startAdvance);
 		endAdvance = PlayerPrefs.GetInt(endAdvancePath, endAdvance);
 		musicPitch = PlayerPrefs.GetFloat(musicPitchPath, musicPitch);

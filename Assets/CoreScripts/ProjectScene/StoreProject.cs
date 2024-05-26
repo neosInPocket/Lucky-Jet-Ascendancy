@@ -67,7 +67,7 @@ public class StoreProject : MonoBehaviour
 			buttonMainInner2.SetActive(true);
 			afterButton2.SetActive(false);
 
-			if (ProjectManagment.Manager.EndAdvance < 5)
+			if (ProjectManagment.Manager.EndAdvance < 1)
 			{
 				button2.interactable = true;
 			}
@@ -95,9 +95,9 @@ public class StoreProject : MonoBehaviour
 		}
 
 		progression1.text = ProjectManagment.Manager.StartAdvance.ToString() + "/" + "5";
-		progression2.text = ProjectManagment.Manager.EndAdvance.ToString() + "/" + "5";
+		progression2.text = ProjectManagment.Manager.EndAdvance.ToString() + "/" + "1";
 		progressionFilling1.fillAmount = (float)ProjectManagment.Manager.StartAdvance / 5f;
-		progressionFilling2.fillAmount = (float)ProjectManagment.Manager.EndAdvance / 5f;
+		progressionFilling2.fillAmount = (float)ProjectManagment.Manager.EndAdvance / 1f;
 		worthText1.text = worth1.ToString();
 		worthText2.text = worth2.ToString();
 		resolver.ResolveCoins();
