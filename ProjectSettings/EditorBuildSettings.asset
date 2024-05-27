@@ -11,5 +11,53 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/InjectScene.unity
     guid: c562b516d1407364b868b4ad96f8a47b
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene.unity
+    guid: 277882846eae88c4b8acb0fa7d768618
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 1.unity
+    guid: 7a346cdec8038544682af8dc31a2e0d7
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 2.unity
+    guid: 42bec001b6938ae44b2b86ed0ca0ec3f
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 3.unity
+    guid: fe1b738475bd20b45937370aecd61416
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 4.unity
+    guid: 1440b9a59d069f8499de60f639790f78
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 5.unity
+    guid: ef79454fce34ec54ab621696a83056b0
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 6.unity
+    guid: 493a59672f52a3841981114289046417
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 7.unity
+    guid: c0fc9c463fa02874eaa972bf1c4820c2
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 8.unity
+    guid: 9880ccd5e4c5b1f4a9a1a48ba8773991
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 9.unity
+    guid: 701ad44ea073bd04a97e87568eed4bca
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 10.unity
+    guid: b6e4aa4c6cf0dfa419e189e5adea736d
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 11.unity
+    guid: baba5b76537bf214fafcdd81fb41577a
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 12.unity
+    guid: 372c5c44b35131b4694b7a46b4563992
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 13.unity
+    guid: cf907f2a8cd104242b712fc0bedf2eae
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 14.unity
+    guid: 6da395225267552429ec7fbfaef1db88
+  - enabled: 1
+    path: Assets/Scenes/ProjectBlueMainScene 15.unity
+    guid: a81b5657204a37b4b970c070b56a1692
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 7b926671f200a304a89101230615792f, type: 2}
